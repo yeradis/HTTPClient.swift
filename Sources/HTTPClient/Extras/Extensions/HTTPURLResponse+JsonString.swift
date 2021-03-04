@@ -1,6 +1,6 @@
 import Foundation
 
-extension HTTPURLResponse {
+public extension HTTPURLResponse {
   func asString() -> String {
     var values: [String: Any] = [:]
     values["statusCode"] = statusCode

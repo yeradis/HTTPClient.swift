@@ -1,8 +1,8 @@
 import Foundation
 
-struct ResponseHandler: HTTPResponseHandler {
+public struct ResponseHandler: HTTPResponseHandler {
 
-  func handle(_ data: Data?, request: URLRequest?, response: URLResponse?, _ error: Error?, completion: @escaping (Result<HTTPResponse, HTTPClientError>) -> ()) {
+  public func handle(_ data: Data?, request: URLRequest?, response: URLResponse?, _ error: Error?, completion: @escaping (Result<HTTPResponse, HTTPClientError>) -> ()) {
     if let error = error {
       completion(Result(error: .httpClientError(error: error)))
       return

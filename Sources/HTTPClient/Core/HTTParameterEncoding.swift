@@ -8,12 +8,12 @@ public struct HTTPParameterEncoding {
   private let arrayEncoding: ArrayEncoding
   private let boolEncoding: BoolEncoding
 
-  init(arrayEncoding: ArrayEncoding = .brackets, boolEncoding: BoolEncoding = .literal) {
+  public init(arrayEncoding: ArrayEncoding = .brackets, boolEncoding: BoolEncoding = .literal) {
     self.arrayEncoding = arrayEncoding
     self.boolEncoding = boolEncoding
   }
 
-  func encode(_ parameters: [String: Any]) -> [(key: String, value: String)] {
+  public func encode(_ parameters: [String: Any]) -> [(key: String, value: String)] {
     var components: [(key: String, value: String)] = []
 
     for key in parameters.keys.sorted(by: <) {

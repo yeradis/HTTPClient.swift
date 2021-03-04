@@ -1,6 +1,6 @@
 import Foundation
 
-extension Dictionary {
+public extension Dictionary {
   var json: String? {
     guard let jsonData = try? JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted]),
           let string = String(bytes: jsonData, encoding: String.Encoding.utf8)

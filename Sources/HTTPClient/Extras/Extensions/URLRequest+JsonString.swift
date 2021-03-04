@@ -1,6 +1,6 @@
 import Foundation
 
-extension URLRequest {
+public extension URLRequest {
   func asString() -> String {
     var values: [String: Any] = [:]
     values["headers"] = allHTTPHeaderFields

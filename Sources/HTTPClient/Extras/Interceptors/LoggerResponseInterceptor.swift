@@ -1,9 +1,9 @@
 import Foundation
 
-struct LoggerResponseInterceptor: HTTPInterceptor {
-  typealias Input = URLResponse
+public struct LoggerResponseInterceptor: HTTPInterceptor {
+  public typealias Input = URLResponse
   
-  func intercept(_ object: LoggerResponseInterceptor.Input) -> LoggerResponseInterceptor.Input {
+  public func intercept(_ object: LoggerResponseInterceptor.Input) -> LoggerResponseInterceptor.Input {
     guard let httpResponse = object as? HTTPURLResponse else {
       return object
     }

@@ -4,7 +4,7 @@ public class HTTPInterceptorChain<Input> {
 
   private var interceptors: [HTTPAnyInterceptor<Input>]
 
-  init(interceptors: [HTTPAnyInterceptor<Input>] = []) {
+  public init(interceptors: [HTTPAnyInterceptor<Input>] = []) {
     self.interceptors = interceptors
   }
 
@@ -16,13 +16,13 @@ public class HTTPInterceptorChain<Input> {
 
   public func proceed(_ object: Input) -> Input {
     let objectResult = interceptors.reduce(object) { (result, object) -> Input in
-      return object.intercept(result)
+      object.intercept(result)
     }
 
     return objectResult
   }
 
   public var count: Int {
-    return interceptors.count
+    interceptors.count
   }
 }

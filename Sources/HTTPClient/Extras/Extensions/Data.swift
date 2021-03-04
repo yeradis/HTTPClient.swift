@@ -1,6 +1,6 @@
 import Foundation
 
-extension Data {
+public extension Data {
 
   var json: String? {
     guard let json = try? JSONSerialization.jsonObject(with: self, options: []),
