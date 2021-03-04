@@ -1,12 +1,12 @@
 import Foundation
 
-extension Error {
+public extension Error {
   var isNetworkError: Bool {
     (self as NSError).isNetworkError
   }
 }
 
-extension NSError {
+public extension NSError {
   var isNetworkError: Bool {
     switch code {
     case NSURLErrorTimedOut,
