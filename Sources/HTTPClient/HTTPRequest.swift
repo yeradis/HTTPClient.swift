@@ -15,7 +15,7 @@ public protocol HTTPRequest {
   func build(using baseURL: URL, parameterEncoding: HTTPParameterEncoding) -> URLRequest
 }
 
-extension HTTPRequest {
+public extension HTTPRequest {
 
   var method: HTTPRequestMethod {
     .GET
@@ -42,7 +42,7 @@ extension HTTPRequest {
   }
 }
 
-extension HTTPRequest {
+public extension HTTPRequest {
 
   func build(using baseURL: URL, parameterEncoding: HTTPParameterEncoding = .default) -> URLRequest {
     let url = baseURL.appendingPathComponentIfNotEmpty(path)
