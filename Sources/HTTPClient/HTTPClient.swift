@@ -10,7 +10,7 @@ public final class HTTPClient {
 
   private let responseHandler: HTTPResponseHandler
 
-  init(baseURL: URL,
+  public init(baseURL: URL,
        configuration: URLSessionConfiguration = URLSessionConfiguration.default,
        responseHandler: HTTPResponseHandler,
        requestInterceptor: HTTPInterceptorChain<URLRequest>,
