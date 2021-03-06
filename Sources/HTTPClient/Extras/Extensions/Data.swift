@@ -19,4 +19,8 @@ public extension Data {
   static func json<T: Codable>(type: T.Type, from data: Data) -> T? {
     try? JSONDecoder().decode(type, from: data)
   }
+
+  var string: String? {
+    json ?? String(decoding: self, as: UTF8.self)
+  }
 }

@@ -10,7 +10,7 @@ public struct ResponseHandlerLogger: HTTPResponseHandler {
   public func handle(_ data: Data?, request: URLRequest?, response: URLResponse?, _ error: Error?, completion: @escaping (Result<HTTPResponse, HTTPClientError>) -> ()) {
     if let httpResponse = response as? HTTPURLResponse {
       let bodyData = data ?? Data()
-      Log.info("RESPONSE:\n\(httpResponse.statusCode) \(httpResponse.asString())\nBODY:\n\(bodyData.json ?? "")")
+      Log.info("RESPONSE:\n\(httpResponse.statusCode) \(httpResponse.asString())\nBODY:\n\(bodyData.string ?? "")")
     }
 
     if let error = error {
