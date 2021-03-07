@@ -6,6 +6,6 @@ public extension HTTPURLResponse {
     values["statusCode"] = statusCode
     values["headers"] = allHeaderFields
     values["url"] = url?.absoluteString
-    return values.json!
+    return values.jsonString!
   }
 }

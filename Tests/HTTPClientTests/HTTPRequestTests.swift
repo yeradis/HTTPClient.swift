@@ -3,33 +3,54 @@ import XCTest
 
 class HTTPRequestTests: XCTestCase {
 
-  func testRequestBuild() {
-    let request = StubRequest.example.build(using: URL(string: "https://test.com/api")!)
+  func test_ReturnParametersAsJSON_Having_MethodPOST_ContentTypeJSON_And_NilBody() {
+    let httpRequest = StubRequest(.POST, .applicationJSON)
+    let request = httpRequest.build(using: URL(string: "https://test.com/api")!)
 
     XCTAssertEqual(request.url?.path, "/api/v1/test")
-    XCTAssertEqual(request.httpMethod, "POST")
+    XCTAssertEqual(request.httpMethod, HTTPRequestMethod.POST.rawValue)
+    XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), HTTPContentType.applicationJSON.value)
 
-    XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+    XCTAssertNotNil(request.httpBody)
+
+    let dict = request.httpBody?.jsonObject as! [String: Any]
+    XCTAssertNotNil(dict["param 1"])
+    XCTAssertNotNil(dict["param 2"])
+    XCTAssertNotNil(dict["param 3"])
+    XCTAssertNotNil(dict["param 4"])
+    XCTAssertTrue((dict["param 5"] as! [Any]).count > 0)
+  }
+
+  func test_ReturnParametersURLEncodedInBody_Having_MethodPOST_ContentTypeFORM_And_NilBody() {
+    let httpRequest = StubRequest(.POST, .applicationFORM)
+    let request = httpRequest.build(using: URL(string: "https://test.com/api")!)
+
+    XCTAssertEqual(request.url?.path, "/api/v1/test")
+    XCTAssertEqual(request.httpMethod, HTTPRequestMethod.POST.rawValue)
+    XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), HTTPContentType.applicationFORM.value)
 
     let components = URLComponents(url: request.url!, resolvingAgainstBaseURL: true)
-    XCTAssertEqual(components?.queryItems?.count, 7)
-    XCTAssertEqual(components?.queryItems?.filter { $0.name == "param 1".URLEncoded }.first?.value, "one")
-    XCTAssertEqual(components?.queryItems?.filter { $0.name == "param 2".URLEncoded }.first?.value, "two")
-    XCTAssertEqual(components?.queryItems?.filter { $0.name == "param 3".URLEncoded }.first?.value, "true")
-    XCTAssertEqual(components?.queryItems?.filter { $0.name == "param 4".URLEncoded }.first?.value, "1")
+    XCTAssertNil(components?.queryItems)
 
-    XCTAssertEqual(components?.queryItems?.filter { $0.name == "param 5[]".URLEncoded }.count, 3)
+    XCTAssertNotNil(request.httpBody)
+    XCTAssertNotNil(request.httpBody?.string)
+    XCTAssertEqual(request.httpBody?.string, httpRequest.parameters?.urlEncoded())
   }
 }
 
 extension HTTPRequestTests {
 
-  enum StubRequest: HTTPRequest {
+  struct StubRequest: HTTPRequest {
+    private let httpMethod: HTTPRequestMethod
+    private let httpContentType: HTTPContentType
 
-    case example
+    init(_ httpMethod: HTTPRequestMethod, _ httpContentType: HTTPContentType) {
+      self.httpMethod = httpMethod
+      self.httpContentType = httpContentType
+    }
 
     var method: HTTPRequestMethod {
-      .POST
+      httpMethod
     }
 
     var path: String {
@@ -45,8 +66,9 @@ extension HTTPRequestTests {
         "param 5": [1,true,"tres"]
       ]
     }
+
     var contentType: HTTPContentType? {
-      .applicationJSON
+      httpContentType
     }
   }
 }

@@ -16,7 +16,7 @@ import OHHTTPStubsSwift
   }
 
   func httpStub(_ content: [AnyHashable: Any], statusCode: Int32 = 200, hostUrl: String = "test.com", headers: [AnyHashable: Any]? = nil) {
-    httpStub(content.json!, statusCode: statusCode, hostUrl: hostUrl, headers: headers)
+    httpStub(content.jsonString!, statusCode: statusCode, hostUrl: hostUrl, headers: headers)
   }
 
   func httpStub(_ error: Error, statusCode: Int32 = 500, hostUrl: String = "test.com", headers: [AnyHashable: Any]? = nil) {

@@ -21,7 +21,7 @@ public extension HTTPRequest {
     .GET
   }
 
-  public var headers: HTTPHeaders? {
+  var headers: HTTPHeaders? {
     nil
   }
 
@@ -51,7 +51,7 @@ public extension HTTPRequest {
 
     var endpoint = components.url!
 
-    if let parameters = parameters, !parameters.isEmpty && !useParametersAsBody {
+    if let parameters = parameters, !parameters.isEmpty && !useParametersUrlEncodedAsBody {
       endpoint = parameterEncoding
               .encode(parameters)
               .reduce(endpoint) {
@@ -74,14 +74,14 @@ public extension HTTPRequest {
       request.httpBody = body
     }
 
-    if let parameters = parameters, !parameters.isEmpty && useParametersAsBody {
-      request.httpBody = parameterEncoding
-              .encode(parameters)
-              .map {
-                "\($0)=\($1)"
-              }
-              .joined(separator: "&")
-              .data(using: .utf8)
+    if useParametersUrlEncodedAsBody {
+      request.httpBody = parameters?.urlEncoded(parameterEncoding)
+    } else if useParametersJSONEncodedAsBody {
+      request.httpBody = parameters?.jsonData
+    }
+
+    if let body = request.httpBody {
+      request.setValue("\(body.count)", forHTTPHeaderField:"Content-Length")
     }
 
     return request
@@ -89,7 +89,11 @@ public extension HTTPRequest {
 }
 
 extension HTTPRequest {
-  var useParametersAsBody: Bool {
+  var useParametersUrlEncodedAsBody: Bool {
     contentType == .applicationFORM && !method.isGET && body == nil
+  }
+
+  var useParametersJSONEncodedAsBody: Bool {
+    contentType == .applicationJSON && !method.isGET && body == nil
   }
 }
