@@ -5,6 +5,7 @@ public extension HTTPURLResponse {
     var values: [String: Any] = [:]
     values["statusCode"] = statusCode
     values["headers"] = allHeaderFields
+    values["mimeType"] = mimeType ?? "<unknown>"
     values["url"] = url?.absoluteString
     return values.jsonString!
   }
