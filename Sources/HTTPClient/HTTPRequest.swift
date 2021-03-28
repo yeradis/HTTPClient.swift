@@ -67,7 +67,7 @@ public extension HTTPRequest {
     }
 
     if let contentType = contentType {
-      request.setValue(contentType.value, forHTTPHeaderField: "Content-Type")
+      request.setValue(contentType.value, forHTTPHeaderField: method.isGET ? "Accept" : "Content-Type")
     }
 
     if let body = body {
