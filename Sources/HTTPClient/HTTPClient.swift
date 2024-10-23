@@ -10,19 +10,39 @@ public final class HTTPClient {
 
   private let responseHandler: HTTPResponseHandler
 
-  public init(baseURL: URL,
+  public convenience init(baseURL: URL,
        configuration: URLSessionConfiguration = URLSessionConfiguration.default,
        responseHandler: HTTPResponseHandler,
        requestInterceptor: HTTPInterceptorChain<URLRequest>,
        responseInterceptor: HTTPInterceptorChain<URLResponse>) {
 
-    self.baseURL = baseURL
-    session = URLSession(configuration: configuration)
-
-    self.responseHandler = responseHandler
-    self.requestInterceptor = requestInterceptor
-    self.responseInterceptor = responseInterceptor
+    self.init(
+			baseURL: baseURL,
+			delegate: nil,
+			responseHandler: responseHandler,
+			requestInterceptor: requestInterceptor,
+			responseInterceptor: responseInterceptor
+		)
   }
+	
+	public init(baseURL: URL,
+	            configuration: URLSessionConfiguration = URLSessionConfiguration.default,
+	            delegate: URLSessionDelegate?,
+	            responseHandler: HTTPResponseHandler,
+	            requestInterceptor: HTTPInterceptorChain<URLRequest>,
+	            responseInterceptor: HTTPInterceptorChain<URLResponse>)
+	{
+		self.baseURL = baseURL
+		session = URLSession(
+			configuration: configuration,
+			delegate: delegate,
+			delegateQueue: nil
+		)
+
+		self.responseHandler = responseHandler
+		self.requestInterceptor = requestInterceptor
+		self.responseInterceptor = responseInterceptor
+	}
 }
 
 extension HTTPClient {
